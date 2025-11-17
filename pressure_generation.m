@@ -27,3 +27,22 @@ P(P > 100) = 100;
 % create timeseries for Simulink
 P_ts = timeseries(P,t);
 assignin('base','P_ts',P_ts);
+
+% --- create a faulty version of P ---
+P_faulty = P;
+
+% fault time
+fault_start_time = 12;           % seconds
+fault_end_time = 18;
+fault_value = 10;          % kPa
+
+% find index where t >= fault_time
+fault_idx = find(t >= fault_start_time & t < fault_end_time);
+
+% apply malfunction from that moment onward
+P_faulty(fault_idx) = fault_value;
+
+% make timeseries for Simulink
+P_faulty_ts = timeseries(P_faulty, t);
+
+assignin('base','P_faulty_ts', P_faulty_ts);
